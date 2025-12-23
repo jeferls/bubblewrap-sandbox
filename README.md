@@ -1,0 +1,78 @@
+# Laravel Bubblewrap Guard
+
+Security layer that forbids executing external commands without a bubblewrap sandbox. Designed for Laravel apps from 5 through 12 that need to process files (PDF, image, video, document) with mandatory `bubblewrap (bwrap)` isolation.
+
+## Why use this
+- Prevents RCE via unsafe `shell_exec/exec/system/passthru/proc_open`.
+- Isolates filesystem, environment variables, and network for the child process.
+- Compatible with PHP 5.6+ and Laravel 5.x to 12.x.
+
+## Installation
+```bash
+composer require greenn-labs/laravel-bwrap-guard
+```
+
+For Laravel >= 5.5, package auto-discovery already registers the provider and the `Sandbox` alias.
+
+For older versions, add manually in `config/app.php`:
+```php
+Greenn\Sandbox\Laravel\BubblewrapServiceProvider::class,
+'Sandbox' => Greenn\Sandbox\Laravel\Sandbox::class,
+```
+
+Publish the configuration (optional):
+```bash
+php artisan vendor:publish --tag=sandbox-config
+```
+
+## Basic usage
+```php
+use Greenn\Sandbox\BubblewrapSandbox;
+
+$runner = app(BubblewrapSandbox::class); // or Sandbox facade
+
+// Command to run inside the sandbox
+$command = array('gs', '-q', '-sDEVICE=png16m', '-o', '/tmp/out.png', '/tmp/in.pdf');
+
+// Bind mounts for input/output (read-only by default)
+$binds = array(
+    array('from' => storage_path('uploads/in.pdf'), 'to' => '/tmp/in.pdf', 'read_only' => true),
+    array('from' => storage_path('tmp'), 'to' => '/tmp', 'read_only' => false),
+);
+
+$process = $runner->run($command, $binds, '/tmp', null, 120);
+$output = $process->getOutput();
+```
+
+### Security rules enforced
+- Every command is prefixed with `bwrap` and `--unshare-all --die-with-parent --new-session`.
+- Default mounts: `/usr`, `/bin`, `/lib*`, `/sbin` as read-only; `/tmp` isolated and writable.
+- PATH is limited (`/usr/bin:/bin:/usr/sbin:/sbin`).
+- If `bwrap` is unavailable or not executable, a `BubblewrapUnavailableException` is thrown.
+
+### Do not
+- Do not call `shell_exec`, `exec`, `system`, `passthru`, `proc_open`, or raw `Symfony Process` for sensitive binaries. Always go through `BubblewrapSandbox`.
+- Do not mount directories containing secrets (e.g., `/home`, `/var/www/.env`).
+
+## Configuration
+Edit `config/sandbox.php` after publishing:
+- `binary`: path to `bwrap`.
+- `base_args`: default flags (avoid removing unshare/die-with-parent).
+- `read_only_binds`: automatic read-only binds.
+- `write_binds`: writable binds (default only `/tmp`).
+
+## Quick examples
+- **Image** with ImageMagick: `['convert', '/tmp/in.png', '-resize', '800x600', '/tmp/out.png']`.
+- **Video** with FFmpeg: `['ffmpeg', '-i', '/tmp/in.mp4', '-vf', 'scale=1280:720', '/tmp/out.mp4']` plus binds for input/output paths.
+- **PDF** with Ghostscript: use the basic usage example.
+
+## Tests
+- Requires PHP `ext-dom` enabled.
+- Install dev dependencies and run:
+  ```bash
+  composer install --no-interaction --no-progress
+  vendor/bin/phpunit
+  ```
+- PHP 5.6–7.x pulls PHPUnit 5.7; PHP 8.x uses PHPUnit 9.6 (coverage optional if `xdebug/pcov` are installed).
+
+
