@@ -14,12 +14,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Greenn\\\\Sandbox\\\\": "src/"
+      "Greenn\\Sandbox\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Greenn\\\\Sandbox\\\\Tests\\\\": "tests/"
+      "Greenn\\Sandbox\\Tests\\": "tests/"
     }
   },
   "extra": {
