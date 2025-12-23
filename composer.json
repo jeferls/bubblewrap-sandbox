@@ -1,5 +1,5 @@
 {
-  "name": "greenn-labs/laravel-bwrap-guard",
+  "name": "greenn-labs/bubblewrap-sandbox",
   "description": "Camada de segurança para execução de comandos externos com Bubblewrap em projetos Laravel 5 a 12.",
   "type": "library",
   "license": "MIT",
