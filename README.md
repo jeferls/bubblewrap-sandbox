@@ -68,11 +68,15 @@ Edit `config/sandbox.php` after publishing:
 
 ## Tests
 - Requires PHP `ext-dom` enabled.
-- Install dev dependencies and run:
+- Local run (single version):
   ```bash
   composer install --no-interaction --no-progress
   vendor/bin/phpunit
   ```
-- PHP 5.6–7.x pulls PHPUnit 5.7; PHP 8.x uses PHPUnit 9.6 (coverage optional if `xdebug/pcov` are installed).
-
-
+  On PHP 5.6–7.x, Composer will pull PHPUnit 5.7; on PHP 8.x it will use PHPUnit 9.6 (coverage is optional if `xdebug`/`pcov` are installed).
+- Matrix via Docker:
+  ```bash
+  chmod +x tools/test-matrix.sh
+  tools/test-matrix.sh
+  ```
+  The script spins up PHP containers and runs PHPUnit across multiple PHP/Laravel pairs. Adjust the `COMBOS` list to narrow versions. Note: the current test suite uses anonymous classes, so the PHP 5.6/Laravel 5.4 combo is commented out (PHP 5.6 lacks that feature).
