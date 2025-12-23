@@ -9,7 +9,7 @@ Security layer that forbids executing external commands without a bubblewrap san
 
 ## Installation
 ```bash
-composer require greenn-labs/laravel-bwrap-guard
+composer require greenn-labs/bubblewrap-sandbox
 ```
 
 For Laravel >= 5.5, package auto-discovery already registers the provider and the `Sandbox` alias.
