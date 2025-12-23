@@ -25,10 +25,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Greenn\\\\Sandbox\\\\Laravel\\\\BubblewrapServiceProvider"
+        "Greenn\\Sandbox\\Laravel\\BubblewrapServiceProvider"
       ],
       "aliases": {
-        "Sandbox": "Greenn\\\\Sandbox\\\\Laravel\\\\Sandbox"
+        "Sandbox": "Greenn\\Sandbox\\Laravel\\Sandbox"
       }
     }
   },
