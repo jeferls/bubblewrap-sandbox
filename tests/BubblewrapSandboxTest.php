@@ -1,9 +1,9 @@
 <?php
 
-namespace Greenn\Sandbox\Tests;
+namespace Greenn\Libs\Tests;
 
-use Greenn\Sandbox\BubblewrapSandbox;
-use Greenn\Sandbox\Exceptions\BubblewrapUnavailableException;
+use Greenn\Libs\BubblewrapSandbox;
+use Greenn\Libs\Exceptions\BubblewrapUnavailableException;
 use InvalidArgumentException;
 use Symfony\Component\Process\Process;
 

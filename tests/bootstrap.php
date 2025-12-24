@@ -3,10 +3,10 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/TestCase.php';
 
-// Fallback para ambientes onde o autoload do Composer não localiza a classe (ex.: autoload otimizado ausente).
-if (!class_exists('Greenn\\Sandbox\\BubblewrapSandbox')) {
+// Fallback for environments where Composer autoload does not locate the class (e.g., optimized autoload missing).
+if (!class_exists('Greenn\\Libs\\BubblewrapSandbox')) {
     require_once __DIR__ . '/../src/BubblewrapSandbox.php';
 }
-if (!class_exists('Greenn\\Sandbox\\Exceptions\\BubblewrapUnavailableException')) {
+if (!class_exists('Greenn\\Libs\\Exceptions\\BubblewrapUnavailableException')) {
     require_once __DIR__ . '/../src/Exceptions/BubblewrapUnavailableException.php';
 }

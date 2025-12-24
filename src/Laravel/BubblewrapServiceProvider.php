@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenn\Sandbox\Laravel;
+namespace Greenn\Libs\Laravel;
 
-use Greenn\Sandbox\BubblewrapSandbox;
+use Greenn\Libs\BubblewrapSandbox;
 use Illuminate\Support\ServiceProvider;
 
 /**

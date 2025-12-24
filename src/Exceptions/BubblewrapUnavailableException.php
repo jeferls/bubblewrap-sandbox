@@ -1,6 +1,6 @@
 <?php
 
-namespace Greenn\Sandbox\Exceptions;
+namespace Greenn\Libs\Exceptions;
 
 use RuntimeException;
 

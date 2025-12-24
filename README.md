@@ -12,12 +12,12 @@ Security layer that forbids executing external commands without a bubblewrap san
 composer require greenn-labs/bubblewrap-sandbox
 ```
 
-For Laravel >= 5.5, package auto-discovery already registers the provider and the `Sandbox` alias.
+For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias.
 
 For older versions, add manually in `config/app.php`:
 ```php
-Greenn\Sandbox\Laravel\BubblewrapServiceProvider::class,
-'Sandbox' => Greenn\Sandbox\Laravel\Sandbox::class,
+Greenn\Libs\Laravel\BubblewrapServiceProvider::class,
+'BubblewrapSandbox' => Greenn\Libs\Laravel\BubblewrapSandbox::class,
 ```
 
 Publish the configuration (optional):
@@ -27,9 +27,9 @@ php artisan vendor:publish --tag=sandbox-config
 
 ## Basic usage
 ```php
-use Greenn\Sandbox\BubblewrapSandbox;
+use Greenn\Libs\BubblewrapSandbox;
 
-$runner = app(BubblewrapSandbox::class); // or Sandbox facade
+$runner = app(BubblewrapSandbox::class); // or BubblewrapSandbox facade
 
 // Command to run inside the sandbox
 $command = array('gs', '-q', '-sDEVICE=png16m', '-o', '/tmp/out.png', '/tmp/in.pdf');
@@ -43,6 +43,9 @@ $binds = array(
 $process = $runner->run($command, $binds, '/tmp', null, 120);
 $output = $process->getOutput();
 ```
+
+## Documentation
+- Quick usage guide: [docs/USING_SANDBOX.md](docs/USING_SANDBOX.md)
 
 ### Security rules enforced
 - Every command is prefixed with `bwrap` and `--unshare-all --die-with-parent --new-session`.

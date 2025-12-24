@@ -14,21 +14,21 @@
   },
   "autoload": {
     "psr-4": {
-      "Greenn\\Sandbox\\": "src/"
+      "Greenn\\Libs\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Greenn\\Sandbox\\Tests\\": "tests/"
+      "Greenn\\Libs\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Greenn\\Sandbox\\Laravel\\BubblewrapServiceProvider"
+        "Greenn\\Libs\\Laravel\\BubblewrapServiceProvider"
       ],
       "aliases": {
-        "Sandbox": "Greenn\\Sandbox\\Laravel\\Sandbox"
+        "BubblewrapSandbox": "Greenn\\Libs\\Laravel\\BubblewrapSandbox"
       }
     }
   },

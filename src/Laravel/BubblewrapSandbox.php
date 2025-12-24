@@ -1,13 +1,13 @@
 <?php
 
-namespace Greenn\Sandbox\Laravel;
+namespace Greenn\Libs\Laravel;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
  * Facade to access the BubblewrapSandbox binding.
  */
-class Sandbox extends Facade
+class BubblewrapSandbox extends Facade
 {
     /**
      * Get the container binding key for the facade.

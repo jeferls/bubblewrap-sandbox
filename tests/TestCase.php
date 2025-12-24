@@ -1,6 +1,6 @@
 <?php
 
-namespace Greenn\Sandbox\Tests;
+namespace Greenn\Libs\Tests;
 
 if (class_exists('\PHPUnit\Framework\TestCase')) {
     abstract class TestCase extends \PHPUnit\Framework\TestCase
