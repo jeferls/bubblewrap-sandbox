@@ -28,7 +28,7 @@
         "Greenn\\Libs\\Laravel\\BubblewrapServiceProvider"
       ],
       "aliases": {
-        "BubblewrapSandbox": "Greenn\\Libs\\Laravel\\BubblewrapSandbox"
+        "BubblewrapSandbox": "Greenn\\Libs\\BubblewrapSandbox"
       }
     }
   },

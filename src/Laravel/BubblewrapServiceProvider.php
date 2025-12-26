@@ -2,7 +2,7 @@
 
 namespace Greenn\Libs\Laravel;
 
-use Greenn\Libs\BubblewrapSandbox;
+use Greenn\Libs\BubblewrapSandboxRunner;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -25,13 +25,13 @@ class BubblewrapServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/sandbox.php', 'sandbox');
 
-        $this->app->singleton(BubblewrapSandbox::class, function ($app) {
+        $this->app->singleton(BubblewrapSandboxRunner::class, function ($app) {
             $config = $app['config']->get('sandbox', array());
 
-            return BubblewrapSandbox::fromConfig($config);
+            return BubblewrapSandboxRunner::fromConfig($config);
         });
 
-        $this->app->alias(BubblewrapSandbox::class, 'sandbox.bwrap');
+        $this->app->alias(BubblewrapSandboxRunner::class, 'sandbox.bwrap');
     }
 
     /**

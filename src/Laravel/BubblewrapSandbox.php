@@ -2,20 +2,11 @@
 
 namespace Greenn\Libs\Laravel;
 
-use Illuminate\Support\Facades\Facade;
+use Greenn\Libs\BubblewrapSandbox as BaseFacade;
 
 /**
  * Facade to access the BubblewrapSandbox binding.
  */
-class BubblewrapSandbox extends Facade
+class BubblewrapSandbox extends BaseFacade
 {
-    /**
-     * Get the container binding key for the facade.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
-    {
-        return 'sandbox.bwrap';
-    }
 }

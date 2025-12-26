@@ -12,12 +12,12 @@ Security layer that forbids executing external commands without a bubblewrap san
 composer require greenn-labs/bubblewrap-sandbox
 ```
 
-For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias.
+For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias (now pointing to the facade at `Greenn\Libs\BubblewrapSandbox`).
 
 For older versions, add manually in `config/app.php`:
 ```php
 Greenn\Libs\Laravel\BubblewrapServiceProvider::class,
-'BubblewrapSandbox' => Greenn\Libs\Laravel\BubblewrapSandbox::class,
+'BubblewrapSandbox' => Greenn\Libs\BubblewrapSandbox::class,
 ```
 
 Publish the configuration (optional):
@@ -27,9 +27,9 @@ php artisan vendor:publish --tag=sandbox-config
 
 ## Basic usage
 ```php
-use Greenn\Libs\BubblewrapSandbox;
+use Greenn\Libs\BubblewrapSandboxRunner;
 
-$runner = app(BubblewrapSandbox::class); // or BubblewrapSandbox facade
+$runner = app(BubblewrapSandboxRunner::class); // or the BubblewrapSandbox facade for static calls
 
 // Command to run inside the sandbox
 $command = array('gs', '-q', '-sDEVICE=png16m', '-o', '/tmp/out.png', '/tmp/in.pdf');
@@ -41,6 +41,15 @@ $binds = array(
 );
 
 $process = $runner->run($command, $binds, '/tmp', null, 120);
+$output = $process->getOutput();
+```
+
+Or via the Laravel facade (no `/Laravel` namespace anymore):
+
+```php
+use Greenn\Libs\BubblewrapSandbox;
+
+$process = BubblewrapSandbox::run(['ls', '-la']);
 $output = $process->getOutput();
 ```
 

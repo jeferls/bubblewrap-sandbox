@@ -2,7 +2,7 @@
 
 namespace Greenn\Libs\Tests;
 
-use Greenn\Libs\BubblewrapSandbox;
+use Greenn\Libs\BubblewrapSandboxRunner;
 use Greenn\Libs\Exceptions\BubblewrapUnavailableException;
 use InvalidArgumentException;
 use Symfony\Component\Process\Process;
@@ -16,10 +16,10 @@ class BubblewrapSandboxTest extends TestCase
     {
         return new class(
             PHP_BINARY,
-            BubblewrapSandbox::defaultBaseArgs(),
-            BubblewrapSandbox::defaultReadOnlyBinds(),
-            BubblewrapSandbox::defaultWritableBinds()
-        ) extends BubblewrapSandbox {
+            BubblewrapSandboxRunner::defaultBaseArgs(),
+            BubblewrapSandboxRunner::defaultReadOnlyBinds(),
+            BubblewrapSandboxRunner::defaultWritableBinds()
+        ) extends BubblewrapSandboxRunner {
             public function normalizePublic(array $binds)
             {
                 return $this->normalizeBinds($binds);
@@ -38,17 +38,17 @@ class BubblewrapSandboxTest extends TestCase
     }
 
     /**
-     * @return BubblewrapSandbox
+     * @return BubblewrapSandboxRunner
      */
     protected function makeSandbox()
     {
         $binary = PHP_BINARY; // ensure executable exists for tests
 
-        return new BubblewrapSandbox(
+        return new BubblewrapSandboxRunner(
             $binary,
-            BubblewrapSandbox::defaultBaseArgs(),
-            BubblewrapSandbox::defaultReadOnlyBinds(),
-            BubblewrapSandbox::defaultWritableBinds()
+            BubblewrapSandboxRunner::defaultBaseArgs(),
+            BubblewrapSandboxRunner::defaultReadOnlyBinds(),
+            BubblewrapSandboxRunner::defaultWritableBinds()
         );
     }
 
@@ -81,11 +81,11 @@ class BubblewrapSandboxTest extends TestCase
 
     public function testThrowsWhenBubblewrapIsMissing()
     {
-        $sandbox = new BubblewrapSandbox(
+        $sandbox = new BubblewrapSandboxRunner(
             'non-existent-bwrap-binary',
-            BubblewrapSandbox::defaultBaseArgs(),
-            BubblewrapSandbox::defaultReadOnlyBinds(),
-            BubblewrapSandbox::defaultWritableBinds()
+            BubblewrapSandboxRunner::defaultBaseArgs(),
+            BubblewrapSandboxRunner::defaultReadOnlyBinds(),
+            BubblewrapSandboxRunner::defaultWritableBinds()
         );
 
         $this->expectExceptionCompat(BubblewrapUnavailableException::class);
@@ -94,7 +94,7 @@ class BubblewrapSandboxTest extends TestCase
 
     public function testProcessBuildsProcessInstance()
     {
-        $sandbox = new BubblewrapSandbox(PHP_BINARY, array(), array(), array());
+        $sandbox = new BubblewrapSandboxRunner(PHP_BINARY, array(), array(), array());
         $process = $sandbox->process(array('echo', 'hi'), array(), null, null, 10);
 
         $this->assertInstanceOf(Process::class, $process);
@@ -104,7 +104,7 @@ class BubblewrapSandboxTest extends TestCase
 
     public function testRunUsesOverriddenProcess()
     {
-        $sandbox = new class(PHP_BINARY, array(), array(), array()) extends BubblewrapSandbox {
+        $sandbox = new class(PHP_BINARY, array(), array(), array()) extends BubblewrapSandboxRunner {
             public $called = false;
 
             public function process(array $command, array $extraBinds = array(), $workingDirectory = null, array $env = null, $timeout = 60)
@@ -134,7 +134,7 @@ class BubblewrapSandboxTest extends TestCase
             'write_binds' => array('/tmp/custom'),
         );
 
-        $sandbox = BubblewrapSandbox::fromConfig($config);
+        $sandbox = BubblewrapSandboxRunner::fromConfig($config);
         $built = $sandbox->buildCommand(array('echo', 'x'));
 
         $this->assertContains('--foo', $built);
@@ -144,26 +144,26 @@ class BubblewrapSandboxTest extends TestCase
 
     public function testDefaultsExposeExpectedMounts()
     {
-        $defaults = BubblewrapSandbox::defaultBaseArgs();
+        $defaults = BubblewrapSandboxRunner::defaultBaseArgs();
         $this->assertContains('--unshare-all', $defaults);
         $this->assertContains('--die-with-parent', $defaults);
         $this->assertContains('/proc', $defaults);
 
-        $readOnly = BubblewrapSandbox::defaultReadOnlyBinds();
+        $readOnly = BubblewrapSandboxRunner::defaultReadOnlyBinds();
         $this->assertContains('/usr', $readOnly);
 
-        $write = BubblewrapSandbox::defaultWritableBinds();
+        $write = BubblewrapSandboxRunner::defaultWritableBinds();
         $this->assertContains('/tmp', $write);
     }
 
     public function testDefaultBinaryUsesAbsolutePath()
     {
-        $this->assertSame('/usr/bin/bwrap', BubblewrapSandbox::defaultBinary());
+        $this->assertSame('/usr/bin/bwrap', BubblewrapSandboxRunner::defaultBinary());
     }
 
     public function testDefaultReadOnlyBindsAddsLib64Conditionally()
     {
-        $readOnly = BubblewrapSandbox::defaultReadOnlyBinds();
+        $readOnly = BubblewrapSandboxRunner::defaultReadOnlyBinds();
         $hasLib64 = is_dir('/lib64');
 
         if ($hasLib64) {
