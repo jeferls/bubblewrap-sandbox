@@ -156,6 +156,23 @@ class BubblewrapSandboxTest extends TestCase
         $this->assertContains('/tmp', $write);
     }
 
+    public function testDefaultBinaryUsesAbsolutePath()
+    {
+        $this->assertSame('/usr/bin/bwrap', BubblewrapSandbox::defaultBinary());
+    }
+
+    public function testDefaultReadOnlyBindsAddsLib64Conditionally()
+    {
+        $readOnly = BubblewrapSandbox::defaultReadOnlyBinds();
+        $hasLib64 = is_dir('/lib64');
+
+        if ($hasLib64) {
+            $this->assertContains('/lib64', $readOnly);
+        } else {
+            $this->assertNotContains('/lib64', $readOnly);
+        }
+    }
+
     public function testNormalizeBindsHandlesStringsAndArrays()
     {
         $sandbox = $this->makeExposedSandbox();

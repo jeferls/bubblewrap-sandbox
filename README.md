@@ -49,7 +49,8 @@ $output = $process->getOutput();
 
 ### Security rules enforced
 - Every command is prefixed with `bwrap` and `--unshare-all --die-with-parent --new-session`.
-- Default mounts: `/usr`, `/bin`, `/lib*`, `/sbin` as read-only; `/tmp` isolated and writable.
+- Default mounts: `/usr`, `/bin`, `/lib`, `/sbin`, `/etc/resolv.conf`, `/etc/ssl` as read-only (adds `/lib64` when the host has it); `/tmp` isolated and writable.
+- Default binary points to `/usr/bin/bwrap` (adjust `config/sandbox.php` if `bwrap` lives elsewhere).
 - PATH is limited (`/usr/bin:/bin:/usr/sbin:/sbin`).
 - If `bwrap` is unavailable or not executable, a `BubblewrapUnavailableException` is thrown.
 
@@ -59,7 +60,7 @@ $output = $process->getOutput();
 
 ## Configuration
 Edit `config/sandbox.php` after publishing:
-- `binary`: path to `bwrap`.
+- `binary`: path to `bwrap` (default `/usr/bin/bwrap`; use `bwrap` if it’s on PATH).
 - `base_args`: default flags (avoid removing unshare/die-with-parent).
 - `read_only_binds`: automatic read-only binds.
 - `write_binds`: writable binds (default only `/tmp`).

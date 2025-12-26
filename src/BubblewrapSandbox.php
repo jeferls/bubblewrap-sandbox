@@ -63,7 +63,7 @@ class BubblewrapSandbox
      */
     public static function fromConfig(array $config)
     {
-        $binary = isset($config['binary']) ? $config['binary'] : 'bwrap';
+        $binary = isset($config['binary']) ? $config['binary'] : static::defaultBinary();
         $baseArgs = isset($config['base_args']) ? $config['base_args'] : static::defaultBaseArgs();
         $readOnly = isset($config['read_only_binds']) ? $config['read_only_binds'] : static::defaultReadOnlyBinds();
         $writable = isset($config['write_binds']) ? $config['write_binds'] : static::defaultWritableBinds();
@@ -152,6 +152,16 @@ class BubblewrapSandbox
     }
 
     /**
+     * Default bubblewrap binary path.
+     *
+     * @return string
+     */
+    public static function defaultBinary()
+    {
+        return '/usr/bin/bwrap';
+    }
+
+    /**
      * Default bubblewrap base arguments.
      *
      * @return array<int,string>
@@ -185,15 +195,20 @@ class BubblewrapSandbox
      */
     public static function defaultReadOnlyBinds()
     {
-        return array(
+        $paths = array(
             '/usr',
             '/bin',
             '/lib',
-            '/lib64',
             '/sbin',
             '/etc/resolv.conf',
             '/etc/ssl',
         );
+
+        if (is_dir('/lib64')) {
+            $paths[] = '/lib64';
+        }
+
+        return $paths;
     }
 
     /**

@@ -1,15 +1,29 @@
 <?php
 
+$readOnlyBinds = array(
+    '/usr',
+    '/bin',
+    '/lib',
+    '/sbin',
+    '/etc/resolv.conf',
+    '/etc/ssl',
+);
+
+// Algumas distros possuem /lib64 (ex.: Debian/Ubuntu); Alpine não cria essa pasta.
+if (is_dir('/lib64')) {
+    $readOnlyBinds[] = '/lib64';
+}
+
 return array(
     /*
     |--------------------------------------------------------------------------
     | bwrap binary path
     |--------------------------------------------------------------------------
     |
-    | Binary used to spawn the sandbox. Keep "bwrap" when it is already
-    | available in the system PATH.
+    | Binary used to spawn the sandbox. Keep "/usr/bin/bwrap" when installed
+    | from distro packages; change to "bwrap" if you prefer PATH lookup.
     */
-    'binary' => 'bwrap',
+    'binary' => '/usr/bin/bwrap',
 
     /*
     |--------------------------------------------------------------------------
@@ -45,15 +59,7 @@ return array(
     |
     | Host paths that will be mounted as read-only inside the sandbox.
     */
-    'read_only_binds' => array(
-        '/usr',
-        '/bin',
-        '/lib',
-        '/lib64',
-        '/sbin',
-        '/etc/resolv.conf',
-        '/etc/ssl',
-    ),
+    'read_only_binds' => $readOnlyBinds,
 
     /*
     |--------------------------------------------------------------------------
