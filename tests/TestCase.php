@@ -1,6 +1,6 @@
 <?php
 
-namespace Greenn\Libs\Tests;
+namespace SecureRun\Tests;
 
 if (class_exists('\PHPUnit\Framework\TestCase')) {
     abstract class TestCase extends \PHPUnit\Framework\TestCase

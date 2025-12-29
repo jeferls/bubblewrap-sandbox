@@ -9,15 +9,15 @@ Security layer that forbids executing external commands without a bubblewrap san
 
 ## Installation
 ```bash
-composer require greenn-labs/bubblewrap-sandbox
+composer require securerun/bubblewrap-sandbox
 ```
 
-For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias.
+For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias (now pointing to the facade at `SecureRun\BubblewrapSandbox`).
 
 For older versions, add manually in `config/app.php`:
 ```php
-Greenn\Libs\Laravel\BubblewrapServiceProvider::class,
-'BubblewrapSandbox' => Greenn\Libs\Laravel\BubblewrapSandbox::class,
+SecureRun\Sandbox\BubblewrapServiceProvider::class,
+'BubblewrapSandbox' => SecureRun\BubblewrapSandbox::class,
 ```
 
 Publish the configuration (optional):
@@ -27,9 +27,9 @@ php artisan vendor:publish --tag=sandbox-config
 
 ## Basic usage
 ```php
-use Greenn\Libs\BubblewrapSandbox;
+use SecureRun\BubblewrapSandboxRunner;
 
-$runner = app(BubblewrapSandbox::class); // or BubblewrapSandbox facade
+$runner = app(BubblewrapSandboxRunner::class); // or the BubblewrapSandbox facade for static calls
 
 // Command to run inside the sandbox
 $command = array('gs', '-q', '-sDEVICE=png16m', '-o', '/tmp/out.png', '/tmp/in.pdf');
@@ -44,12 +44,22 @@ $process = $runner->run($command, $binds, '/tmp', null, 120);
 $output = $process->getOutput();
 ```
 
+Or via the Laravel facade (no `/Laravel` namespace anymore):
+
+```php
+use SecureRun\BubblewrapSandbox;
+
+$process = BubblewrapSandbox::run(['ls', '-la']);
+$output = $process->getOutput();
+```
+
 ## Documentation
 - Quick usage guide: [docs/USING_SANDBOX.md](docs/USING_SANDBOX.md)
 
 ### Security rules enforced
 - Every command is prefixed with `bwrap` and `--unshare-all --die-with-parent --new-session`.
-- Default mounts: `/usr`, `/bin`, `/lib*`, `/sbin` as read-only; `/tmp` isolated and writable.
+- Default mounts: `/usr`, `/bin`, `/lib`, `/sbin`, `/etc/resolv.conf`, `/etc/ssl` as read-only (adds `/lib64` when the host has it); `/tmp` isolated and writable.
+- Default binary points to `/usr/bin/bwrap` (adjust `config/sandbox.php` if `bwrap` lives elsewhere).
 - PATH is limited (`/usr/bin:/bin:/usr/sbin:/sbin`).
 - If `bwrap` is unavailable or not executable, a `BubblewrapUnavailableException` is thrown.
 
@@ -59,7 +69,7 @@ $output = $process->getOutput();
 
 ## Configuration
 Edit `config/sandbox.php` after publishing:
-- `binary`: path to `bwrap`.
+- `binary`: path to `bwrap` (default `/usr/bin/bwrap`; use `bwrap` if it’s on PATH).
 - `base_args`: default flags (avoid removing unshare/die-with-parent).
 - `read_only_binds`: automatic read-only binds.
 - `write_binds`: writable binds (default only `/tmp`).

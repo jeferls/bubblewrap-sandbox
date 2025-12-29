@@ -1,6 +1,6 @@
 <?php
 
-namespace Greenn\Libs\Exceptions;
+namespace SecureRun\Exceptions;
 
 use RuntimeException;
 

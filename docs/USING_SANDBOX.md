@@ -10,11 +10,11 @@ Este pacote coloca comandos externos em uma “caixa de areia” (sandbox) usand
 - PHP 5.6+ e Laravel 5–12 (já atendidos se você instalou o pacote).
 
 ## Instalação no projeto Laravel
-1. `composer require greenn-labs/bubblewrap-sandbox`
+1. `composer require securerun/bubblewrap-sandbox`
 2. Publique a configuração (opcional, para personalizar): `php artisan vendor:publish --tag=sandbox-config`
 3. O provider e o alias são registrados automaticamente:
-   - Provider: `Greenn\Libs\Laravel\BubblewrapServiceProvider`
-   - Facade: `Greenn\Libs\Laravel\BubblewrapSandbox` (alias `BubblewrapSandbox`)
+   - Provider: `SecureRun\Sandbox\BubblewrapServiceProvider`
+   - Facade: `SecureRun\BubblewrapSandbox` (alias `BubblewrapSandbox`)
 
 ## Conceito rápido
 - Tudo que roda dentro do sandbox enxerga um sistema de arquivos mínimo.
@@ -23,9 +23,9 @@ Este pacote coloca comandos externos em uma “caixa de areia” (sandbox) usand
 - Caminho padrão de trabalho: `/tmp`.
 
 ## Configuração (arquivo `config/sandbox.php`)
-- `binary`: caminho do bwrap (ex.: `bwrap` ou `/usr/bin/bwrap`).
+- `binary`: caminho do bwrap (padrão `/usr/bin/bwrap`; use `bwrap` se preferir buscar no PATH).
 - `base_args`: flags de isolamento padrão (geralmente não precisa mexer).
-- `read_only_binds`: pastas montadas como leitura (padrão: `/usr`, `/bin`, etc).
+- `read_only_binds`: pastas montadas como leitura (padrão: `/usr`, `/bin`, `/lib`, `/sbin`, `/etc/resolv.conf`, `/etc/ssl` e adiciona `/lib64` se existir).
 - `write_binds`: pastas montadas com escrita (padrão: `/tmp`).
 
 Para ambientes não padrão, ajuste apenas `binary`. Para expor mais pastas, adicione nos binds.
@@ -33,9 +33,9 @@ Para ambientes não padrão, ajuste apenas `binary`. Para expor mais pastas, adi
 ## Como executar um comando (PHP)
 ### Sem Laravel (instância direta)
 ```php
-use Greenn\Libs\BubblewrapSandbox;
+use SecureRun\BubblewrapSandboxRunner;
 
-$sandbox = BubblewrapSandbox::fromConfig(config('sandbox'));
+$sandbox = BubblewrapSandboxRunner::fromConfig(config('sandbox'));
 
 $process = $sandbox->run(
     ['echo', 'hello'],   // comando e argumentos em array
@@ -50,7 +50,7 @@ echo $process->getOutput();
 
 ### Com Laravel (facade `Sandbox`)
 ```php
-use Greenn\Libs\Laravel\BubblewrapSandbox;
+use SecureRun\BubblewrapSandbox;
 
 $process = BubblewrapSandbox::run(['ls', '-la']);
 $saida = $process->getOutput();
