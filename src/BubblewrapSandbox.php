@@ -1,11 +1,11 @@
 <?php
 
-namespace Greenn\Libs;
+namespace SecureRun;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Laravel facade exposed as Greenn\Libs\BubblewrapSandbox.
+ * Laravel facade exposed as SecureRun\BubblewrapSandbox.
  *
  * The underlying implementation is bound to the container as "sandbox.bwrap".
  */

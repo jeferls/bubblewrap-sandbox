@@ -9,15 +9,15 @@ Security layer that forbids executing external commands without a bubblewrap san
 
 ## Installation
 ```bash
-composer require greenn-labs/bubblewrap-sandbox
+composer require securerun/bubblewrap-sandbox
 ```
 
-For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias (now pointing to the facade at `Greenn\Libs\BubblewrapSandbox`).
+For Laravel >= 5.5, package auto-discovery already registers the provider and the `BubblewrapSandbox` alias (now pointing to the facade at `SecureRun\BubblewrapSandbox`).
 
 For older versions, add manually in `config/app.php`:
 ```php
-Greenn\Libs\Laravel\BubblewrapServiceProvider::class,
-'BubblewrapSandbox' => Greenn\Libs\BubblewrapSandbox::class,
+SecureRun\Sandbox\BubblewrapServiceProvider::class,
+'BubblewrapSandbox' => SecureRun\BubblewrapSandbox::class,
 ```
 
 Publish the configuration (optional):
@@ -27,7 +27,7 @@ php artisan vendor:publish --tag=sandbox-config
 
 ## Basic usage
 ```php
-use Greenn\Libs\BubblewrapSandboxRunner;
+use SecureRun\BubblewrapSandboxRunner;
 
 $runner = app(BubblewrapSandboxRunner::class); // or the BubblewrapSandbox facade for static calls
 
@@ -47,7 +47,7 @@ $output = $process->getOutput();
 Or via the Laravel facade (no `/Laravel` namespace anymore):
 
 ```php
-use Greenn\Libs\BubblewrapSandbox;
+use SecureRun\BubblewrapSandbox;
 
 $process = BubblewrapSandbox::run(['ls', '-la']);
 $output = $process->getOutput();

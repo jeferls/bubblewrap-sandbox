@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenn\Libs\Laravel;
+namespace SecureRun\Sandbox;
 
-use Greenn\Libs\BubblewrapSandboxRunner;
+use SecureRun\BubblewrapSandboxRunner;
 use Illuminate\Support\ServiceProvider;
 
 /**

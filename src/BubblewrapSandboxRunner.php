@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenn\Libs;
+namespace SecureRun;
 
-use Greenn\Libs\Exceptions\BubblewrapUnavailableException;
+use SecureRun\Exceptions\BubblewrapUnavailableException;
 use InvalidArgumentException;
 use Symfony\Component\Process\Process;
 
@@ -239,7 +239,7 @@ class BubblewrapSandboxRunner
     /**
      * Ensure bubblewrap is available to execute.
      *
-     * @throws \Greenn\Sandbox\Exceptions\BubblewrapUnavailableException
+     * @throws \SecureRun\Exceptions\BubblewrapUnavailableException
      * @return void
      */
     protected function assertBubblewrapIsExecutable()

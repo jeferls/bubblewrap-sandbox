@@ -1,5 +1,5 @@
 {
-  "name": "greenn-labs/bubblewrap-sandbox",
+  "name": "securerun/bubblewrap-sandbox",
   "description": "Security layer to run external commands inside bubblewrap for Laravel 5 through 12.",
   "keywords": ["laravel", "bubblewrap", "sandbox", "security", "bwrap"],
   "type": "library",
@@ -14,21 +14,21 @@
   },
   "autoload": {
     "psr-4": {
-      "Greenn\\Libs\\": "src/"
+      "SecureRun\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Greenn\\Libs\\Tests\\": "tests/"
+      "SecureRun\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Greenn\\Libs\\Laravel\\BubblewrapServiceProvider"
+        "SecureRun\\Sandbox\\BubblewrapServiceProvider"
       ],
       "aliases": {
-        "BubblewrapSandbox": "Greenn\\Libs\\BubblewrapSandbox"
+        "BubblewrapSandbox": "SecureRun\\BubblewrapSandbox"
       }
     }
   },

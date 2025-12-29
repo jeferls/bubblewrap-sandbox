@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenn\Libs\Laravel;
+namespace SecureRun\Sandbox;
 
-use Greenn\Libs\BubblewrapSandbox as BaseFacade;
+use SecureRun\BubblewrapSandbox as BaseFacade;
 
 /**
  * Facade to access the BubblewrapSandbox binding.

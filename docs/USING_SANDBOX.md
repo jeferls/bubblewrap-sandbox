@@ -10,11 +10,11 @@ Este pacote coloca comandos externos em uma “caixa de areia” (sandbox) usand
 - PHP 5.6+ e Laravel 5–12 (já atendidos se você instalou o pacote).
 
 ## Instalação no projeto Laravel
-1. `composer require greenn-labs/bubblewrap-sandbox`
+1. `composer require securerun/bubblewrap-sandbox`
 2. Publique a configuração (opcional, para personalizar): `php artisan vendor:publish --tag=sandbox-config`
 3. O provider e o alias são registrados automaticamente:
-   - Provider: `Greenn\Libs\Laravel\BubblewrapServiceProvider`
-   - Facade: `Greenn\Libs\BubblewrapSandbox` (alias `BubblewrapSandbox`)
+   - Provider: `SecureRun\Sandbox\BubblewrapServiceProvider`
+   - Facade: `SecureRun\BubblewrapSandbox` (alias `BubblewrapSandbox`)
 
 ## Conceito rápido
 - Tudo que roda dentro do sandbox enxerga um sistema de arquivos mínimo.
@@ -33,7 +33,7 @@ Para ambientes não padrão, ajuste apenas `binary`. Para expor mais pastas, adi
 ## Como executar um comando (PHP)
 ### Sem Laravel (instância direta)
 ```php
-use Greenn\Libs\BubblewrapSandboxRunner;
+use SecureRun\BubblewrapSandboxRunner;
 
 $sandbox = BubblewrapSandboxRunner::fromConfig(config('sandbox'));
 
@@ -50,7 +50,7 @@ echo $process->getOutput();
 
 ### Com Laravel (facade `Sandbox`)
 ```php
-use Greenn\Libs\BubblewrapSandbox;
+use SecureRun\BubblewrapSandbox;
 
 $process = BubblewrapSandbox::run(['ls', '-la']);
 $saida = $process->getOutput();
